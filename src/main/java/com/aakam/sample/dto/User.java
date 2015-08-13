@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class User implements Serializable {
 
+	@JsonView(UserView.Detail.class)
 	private Long userId;
 
 	@JsonView(UserView.Summary.class)
@@ -15,6 +16,7 @@ public class User implements Serializable {
 	@JsonView(UserView.Summary.class)
 	private String firstNm;
 
+	@JsonView(UserView.Detail.class)
 	private String lastNm;
 
 	public User(Long userId, String firstNm, String lastNm) {
