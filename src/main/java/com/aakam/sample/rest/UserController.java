@@ -29,20 +29,42 @@ public class UserController {
 	@Autowired
 	private UserRA userRA;
 
-	@JsonView(UserView.Summary.class)
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/full", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Resource<User> getUserWithResource() {
+	public User getFullUser() {
+		User user = new User(1L, "fname", "lname");
+		return user;
+	}
 
+	@JsonView(UserView.Summary.class)
+	@RequestMapping(value="/resource-filtered", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Resource<User> getFilteredUserWithResource() {
 		User user = new User(1L, "fname", "lname");
 		return userRA.toResource(user);
 	}
 
 	@JsonView(UserView.Summary.class)
-	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/filtered", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public User getUser() {
+	public User getFilteredUser() {
 		User user = new User(1L, "fname", "lname");
 		return user;
 	}
+
+	@JsonView(UserView.Summary.class)
+	@RequestMapping(value="/resource-resource-filtered", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Resource<Resource<User>> getFilteredUserWithResourceResource() {
+		User user = new User(1L, "fname", "lname");
+		return new Resource<Resource<User>>(userRA.toResource(user));
+	}
+
+	@RequestMapping(value="/resource-resource", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Resource<Resource<User>> getFullUserWithResourceResource() {
+		User user = new User(1L, "fname", "lname");
+		return new Resource<Resource<User>>(userRA.toResource(user));
+	}
+
 }
